@@ -1,0 +1,631 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Marlon Duarte | Portfólio</title>
+<meta name="description" content="Portfólio de Marlon Duarte, Engenheiro Agrônomo: agricultura de precisão, mapeamento com drones, georreferenciamento GNSS/RTK e qualidade de operações de campo.">
+<meta property="og:title" content="Marlon Duarte | Portfólio">
+<meta property="og:description" content="Engenheiro Agrônomo · Agricultura de precisão, drones e georreferenciamento · Bauru/SP">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{color-scheme:light dark}
+html{scroll-behavior:smooth}
+body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+
+/* Layout: ficha técnica de campo — hero com o talhão vivo à direita, seções em coluna única com régua lateral de rótulos */
+:root{
+  --bg:#F0F3EE;
+  --surface:#F9FBF7;
+  --ink:#13211B;
+  --muted:#55645B;
+  --line:#D2DBD2;
+  --flag:#BE1A5A;        /* fita de sinalização de campo */
+  --flag-soft:#F7DCE7;
+  --soil:#D8D2C2;
+  --f-display:"Big Shoulders Display","Arial Narrow",Impact,sans-serif;
+  --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  --step--1:.8125rem; --step-0:1rem; --step-1:1.1875rem; --step-2:1.5rem; --step-3:2.25rem; --step-4:clamp(2.6rem,6vw,4.4rem);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0E1511;--surface:#151F19;--ink:#E3EBE5;--muted:#98A79E;--line:#28352D;--flag:#F0679B;--flag-soft:#3A1726;--soil:#2A2A22;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0E1511;--surface:#151F19;--ink:#E3EBE5;--muted:#98A79E;--line:#28352D;--flag:#F0679B;--flag-soft:#3A1726;--soil:#2A2A22;color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:var(--step-0);line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--flag);outline-offset:3px;border-radius:2px}
+.wrap{max-width:1160px;margin:0 auto;padding-inline:clamp(16px,4vw,40px)}
+h1,h2,h3{text-wrap:balance;margin:0}
+p{margin:0}
+.mono{font-family:var(--f-mono)}
+.eyebrow{font-family:var(--f-mono);font-size:var(--step--1);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+
+/* Topo */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:600}
+.brand b{font-family:var(--f-display);font-weight:800;font-size:1.35rem;letter-spacing:.02em;background:var(--ink);color:var(--bg);padding:2px 8px;line-height:1.2}
+.top nav{display:flex;gap:18px;flex-wrap:wrap;font-size:.9rem}
+.top nav a{text-decoration:none;color:var(--muted)}
+.top nav a:hover{color:var(--ink)}
+
+/* Hero */
+.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:clamp(24px,4vw,56px);align-items:center;padding-block:clamp(32px,6vw,72px)}
+.hero h1{font-family:var(--f-display);font-weight:800;font-size:var(--step-4);line-height:.98;letter-spacing:.005em;text-transform:uppercase;margin-block:14px 18px}
+.hero h1 em{font-style:normal;color:var(--flag)}
+.hero .lede{font-size:var(--step-1);color:var(--muted);max-width:34em}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;font-weight:600;font-size:.95rem;text-decoration:none;border:1.5px solid var(--ink);border-radius:999px;background:transparent;color:var(--ink);cursor:pointer;font-family:inherit}
+.btn.primary{background:var(--ink);color:var(--bg)}
+.btn:hover{border-color:var(--flag)}
+.btn.primary:hover{background:var(--flag);border-color:var(--flag);color:#fff}
+
+/* Talhão */
+.field{min-width:0}
+.field-frame{position:relative;border:1px solid var(--line);background:var(--surface);border-radius:6px;overflow:hidden}
+.field-frame canvas{display:block;width:100%;aspect-ratio:4/3;max-width:100%}
+.hud{position:absolute;left:10px;right:10px;display:flex;justify-content:space-between;gap:8px;pointer-events:none;font-family:var(--f-mono);font-size:.72rem;line-height:1.35}
+.hud.t{top:10px}.hud.b{bottom:10px;align-items:flex-end}
+.chip{background:color-mix(in srgb,var(--surface) 86%,transparent);border:1px solid var(--line);padding:5px 8px;border-radius:4px;font-variant-numeric:tabular-nums}
+.chip strong{color:var(--flag);font-weight:500}
+.legend{display:flex;flex-direction:column;gap:4px;min-width:140px}
+.ramp{height:8px;border-radius:2px}
+.ramp-labels{display:flex;justify-content:space-between;color:var(--muted)}
+.zones{display:flex;flex-direction:column;gap:3px}
+.zones span{display:flex;align-items:center;gap:6px}
+.zones i{width:10px;height:10px;display:inline-block;border-radius:2px}
+.stages{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--line)}
+.stages button{font:inherit;font-size:.85rem;background:transparent;border:0;border-right:1px solid var(--line);color:var(--muted);padding:10px 6px;cursor:pointer;text-align:left;position:relative}
+.stages button:last-child{border-right:0}
+.stages button span{font-family:var(--f-mono);font-size:.72rem;display:block;color:var(--muted)}
+.stages button[aria-pressed="true"]{color:var(--ink);font-weight:600;background:var(--bg)}
+.stages button[aria-pressed="true"]::before{content:"";position:absolute;left:0;right:0;top:-1px;height:3px;background:var(--flag)}
+.stages button .bar{position:absolute;left:0;bottom:0;height:2px;background:var(--flag);width:0}
+.caption{display:flex;gap:12px;align-items:flex-start;margin-top:12px;font-size:.92rem;color:var(--muted);min-height:3.2em}
+.caption .btn{padding:5px 12px;font-size:.8rem;flex:none}
+
+/* Seções */
+section.block{border-top:1px solid var(--line);padding-block:clamp(40px,6vw,72px)}
+.block-grid{display:grid;grid-template-columns:200px minmax(0,1fr);gap:clamp(20px,4vw,48px)}
+.block-grid > .eyebrow{padding-top:8px}
+.block h2{font-family:var(--f-display);font-weight:800;font-size:var(--step-3);line-height:1.05;text-transform:uppercase;margin-bottom:18px}
+.prose{max-width:62ch;color:var(--ink)}
+.prose p+p{margin-top:14px}
+.prose .muted{color:var(--muted)}
+
+.diff{background:var(--ink);color:var(--bg)}
+.diff .eyebrow{color:color-mix(in srgb,var(--bg) 70%,var(--ink))}
+.diff h2{max-width:22ch}
+.triad{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:color-mix(in srgb,var(--bg) 25%,var(--ink));margin-top:26px}
+.triad div{background:var(--ink);padding:18px 18px 20px}
+.triad h3{font-family:var(--f-mono);font-size:.8rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--flag-soft);margin-bottom:6px}
+.triad p{font-size:.95rem;color:color-mix(in srgb,var(--bg) 82%,var(--ink))}
+
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;border:1px solid var(--line);background:var(--surface)}
+.stat{padding:20px 18px;border-right:1px solid var(--line)}
+.stat:last-child{border-right:0}
+.stat b{display:block;font-family:var(--f-display);font-weight:800;font-size:3rem;line-height:1;font-variant-numeric:tabular-nums}
+.stat b small{font-size:1.4rem}
+.stat span{display:block;margin-top:8px;font-size:.9rem;color:var(--muted)}
+
+.pa-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.pa{background:var(--surface);padding:20px 20px 22px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.pa-fig{height:72px;margin-bottom:8px}
+.pa-fig svg{height:100%;width:auto;max-width:100%;display:block}
+.pa-fig .l{stroke:var(--line);stroke-width:1.5}
+.pa-fig .d{fill:var(--ink)}
+.pa-fig .hl{fill:none;stroke:var(--flag);stroke-width:1.6;stroke-dasharray:3 2}
+.pa-fig .g{fill:none;stroke:var(--muted);stroke-width:1;stroke-dasharray:2 2}
+.pa-fig .v{fill:var(--flag)}
+.pa-fig .c{fill:none;stroke:var(--ink);stroke-width:1.4}
+.pa-fig .w{fill:none;stroke:#2f7fbf;stroke-width:2.2;stroke-linecap:round}
+.pa .eyebrow{color:var(--flag);font-size:.72rem}
+.pa h3{font-size:var(--step-1);font-weight:600;line-height:1.25}
+.pa p:last-child{font-size:.92rem;color:var(--muted)}
+.skills{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:28px 32px}
+.skills h3{font-size:var(--step-0);font-weight:600;padding-bottom:8px;border-bottom:2px solid var(--ink);margin-bottom:10px}
+.skills ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.skills li{font-size:.85rem;padding:3px 9px;border:1px solid var(--line);border-radius:999px;background:var(--surface)}
+
+.flow{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));counter-reset:f}
+.flow li{counter-increment:f;padding:14px 12px 14px 0;border-top:2px solid var(--ink);position:relative;min-width:0}
+.flow li::before{content:"M-0" counter(f);font-family:var(--f-mono);font-size:.72rem;color:var(--flag);display:block;margin-bottom:6px}
+.flow li::after{content:"";position:absolute;top:-6px;left:0;width:10px;height:10px;background:var(--flag);transform:rotate(45deg)}
+.flow b{display:block;font-weight:600;font-size:.95rem;line-height:1.3}
+.flow span{display:block;font-size:.82rem;color:var(--muted);margin-top:4px}
+
+.cases{display:grid;gap:18px}
+.case{border:1px solid var(--line);background:var(--surface);padding:clamp(18px,3vw,28px);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:20px 32px}
+.case header .eyebrow{color:var(--flag)}
+.case h3{font-size:var(--step-2);line-height:1.2;margin-top:6px;font-weight:600}
+.case header p{margin-top:10px;color:var(--muted);font-size:.92rem}
+.case dl{margin:0;display:grid;grid-template-columns:140px minmax(0,1fr);gap:10px 18px;font-size:.93rem}
+.case dt{font-family:var(--f-mono);font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding-top:3px}
+.case dd{margin:0}
+
+.timeline{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.timeline li{display:grid;grid-template-columns:150px minmax(0,1fr);gap:18px;padding:14px 0;border-bottom:1px dashed var(--line)}
+.timeline li:first-child{padding-top:0}
+.timeline time{font-family:var(--f-mono);font-size:.85rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.timeline b{font-weight:600}
+.timeline p{color:var(--muted);font-size:.93rem;margin-top:2px}
+.timeline .now time{color:var(--flag)}
+
+.edu{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.edu div{border-left:3px solid var(--ink);padding:4px 0 4px 14px}
+.edu b{display:block;font-weight:600}
+.edu span{color:var(--muted);font-size:.92rem}
+
+.contact{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:22px}
+.ccard{border:1px solid var(--line);background:var(--surface);padding:16px;display:flex;flex-direction:column;gap:6px}
+.ccard .eyebrow{font-size:.72rem}
+.ccard .val{font-family:var(--f-mono);font-size:1.05rem;user-select:all}
+.ccard .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+.ccard .btn{padding:6px 12px;font-size:.82rem}
+footer{border-top:1px solid var(--line);padding-block:24px;font-size:.85rem;color:var(--muted)}
+footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+@media (max-width:900px){
+  .hero{grid-template-columns:minmax(0,1fr)}
+  .block-grid{grid-template-columns:minmax(0,1fr);gap:10px}
+  .flow{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:22px}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .stat:nth-child(2){border-right:0}
+  .stat:nth-child(-n+2){border-bottom:1px solid var(--line)}
+  .case{grid-template-columns:minmax(0,1fr)}
+  .triad{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:560px){
+  .top nav{display:none}
+  .flow{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .case dl{grid-template-columns:minmax(0,1fr);gap:2px}
+  .case dd{margin-bottom:10px}
+  .timeline li{grid-template-columns:minmax(0,1fr);gap:2px}
+  .hud{font-size:.64rem}
+  .legend{min-width:110px}
+  .stages button{font-size:.75rem;padding:8px 4px}
+}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#topo"><b>MD</b> Marlon Duarte</a>
+    <nav aria-label="Seções">
+      <a href="#sobre">Sobre</a><a href="#precisao">Precisão</a><a href="#competencias">Competências</a><a href="#casos">Casos</a><a href="#trajetoria">Trajetória</a><a href="#contato">Contato</a>
+    </nav>
+  </div>
+</header>
+
+<main id="topo">
+  <div class="wrap hero">
+    <div>
+      <p class="eyebrow">Engenheiro Agrônomo · Bauru/SP</p>
+      <h1>Do vértice no campo à <em>decisão no talhão</em></h1>
+      <p class="lede">Agricultura de precisão, mapeamento com drones, georreferenciamento GNSS/RTK e qualidade de operações de campo. Transformo dados coletados no campo em mapas, peças técnicas e relatórios que ajudam a decidir.</p>
+      <div class="actions">
+        <a class="btn primary" href="#casos">Ver casos profissionais</a>
+        <a class="btn" href="https://wa.me/5514996791426" target="_blank" rel="noopener">WhatsApp</a>
+        <a class="btn" href="https://www.instagram.com/marlonduarte.drone/" target="_blank" rel="noopener">Instagram</a>
+        <a class="btn" href="https://www.linkedin.com/in/marlon-duarte-85084a265/" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
+
+    <figure class="field" style="margin:0">
+      <div class="field-frame">
+        <canvas id="talhao" aria-label="Animação: drone multiespectral sobrevoando um talhão e gerando mapas de NDVI, zonas de manejo e prescrição em taxa variável" role="img"></canvas>
+        <div class="hud t">
+          <div class="chip" id="hudStage"><strong>01</strong> Voo e captura</div>
+          <div class="chip" id="hudCoord">SIRGAS 2000 / UTM 22S<br>E 700.000 · N 7.531.000</div>
+        </div>
+        <div class="hud b">
+          <div class="chip">ALT 100 m · sobrep. 80/70%<br>4 bandas + RGB</div>
+          <div class="chip legend" id="legend"></div>
+        </div>
+        <div class="stages" role="group" aria-label="Etapas">
+          <button type="button" data-s="0" aria-pressed="true"><span>01</span>Voo<i class="bar"></i></button>
+          <button type="button" data-s="1" aria-pressed="false"><span>02</span>NDVI<i class="bar"></i></button>
+          <button type="button" data-s="2" aria-pressed="false"><span>03</span>Zonas<i class="bar"></i></button>
+          <button type="button" data-s="3" aria-pressed="false"><span>04</span>Prescrição<i class="bar"></i></button>
+        </div>
+      </div>
+      <figcaption class="caption">
+        <button type="button" class="btn" id="play" aria-label="Pausar animação">Pausar</button>
+        <span id="capText">O drone percorre faixas paralelas com sobreposição, captando as bandas verde, vermelho, red edge e infravermelho próximo.</span>
+      </figcaption>
+    </figure>
+  </div>
+
+  <section class="block diff">
+    <div class="wrap block-grid">
+      <p class="eyebrow">Diferencial</p>
+      <div>
+        <h2>Uma leitura completa do imóvel rural</h2>
+        <p class="prose" style="color:inherit;opacity:.88">Conecto três camadas que costumam ficar separadas: onde o imóvel está e quais são seus limites, como as operações de campo são executadas e como a lavoura responde.</p>
+        <div class="triad">
+          <div><h3>Limite</h3><p>GNSS/RTK, SIGEF, SICAR e plantas em AutoCAD. O imóvel com vértices, confrontantes e documentação em ordem.</p></div>
+          <div><h3>Operação</h3><p>Auditorias de silvicultura, colheita e logística florestal em três estados. Execução de campo medida contra padrão.</p></div>
+          <div><h3>Lavoura</h3><p>Ortomosaicos, modelos de terreno e aplicação com drone. A área vista de cima para orientar o manejo.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="sobre">
+    <div class="wrap block-grid">
+      <p class="eyebrow">Sobre mim</p>
+      <div>
+        <h2>Agronomia com régua de topógrafo</h2>
+        <div class="prose">
+          <p>Sou Engenheiro Agrônomo formado pela FIB Bauru em 2025, com cerca de cinco anos de atuação em campo, desde o início da graduação. Hoje atuo como Assistente Técnico de Topografia em agrimensura, fazendo mapeamento com drones (processamento em Agisoft Metashape e QGIS), levantamentos GNSS/RTK com pós-processamento PPP-IBGE, cadastros no SIGEF e no SICAR e plantas e memoriais em AutoCAD.</p>
+          <p>Antes disso, fui Técnico Florestal, auditando a qualidade de operações de silvicultura, colheita e logística em São Paulo, Mato Grosso do Sul e Paraná. Também trago experiência com planilhas e relatórios técnicos, construída no setor de serviços.</p>
+          <p>Sou certificado no Curso de Aplicador Aeroagrícola Remoto (CAAR) pela FCA-Unesp Botucatu e mantenho a MD Drones, minha empresa de imagens aéreas com drone próprio. Quero crescer na produção agrícola e na agricultura de precisão.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="indicadores">
+    <div class="wrap block-grid">
+      <p class="eyebrow">Indicadores</p>
+      <div>
+        <h2>Campo, escritório e ar</h2>
+        <div class="stats">
+          <div class="stat"><b>~5<small> anos</small></b><span>de atuação em campo, desde o início da faculdade</span></div>
+          <div class="stat"><b>3</b><span>estados auditados: SP, MS e PR</span></div>
+          <div class="stat"><b>+5.000<small> ha</small></b><span>de terras mapeadas</span></div>
+          <div class="stat"><b>CAAR</b><span>aplicação aeroagrícola remota, FCA-Unesp</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="precisao">
+    <div class="wrap block-grid">
+      <p class="eyebrow">Agricultura de precisão</p>
+      <div>
+        <h2>Por que mapear o talhão</h2>
+        <p class="prose" style="color:var(--muted);margin-bottom:26px">Tratar a lavoura como um bloco único é aplicar a média num lugar que não é uniforme. O mapeamento mostra onde estão as diferenças e transforma cada decisão em uma decisão localizada.</p>
+        <div class="pa-grid">
+          <article class="pa">
+            <div class="pa-fig"><svg viewBox="0 0 120 72" aria-hidden="true"><line x1="8" y1="12" x2="112" y2="12" class="l"/><line x1="8" y1="24" x2="112" y2="24" class="l"/><line x1="8" y1="36" x2="112" y2="36" class="l"/><line x1="8" y1="48" x2="112" y2="48" class="l"/><line x1="8" y1="60" x2="112" y2="60" class="l"/><circle cx="14" cy="12" r="2.6" class="d"/><circle cx="26" cy="24" r="2.6" class="d"/><circle cx="38" cy="36" r="2.6" class="d"/><circle cx="62" cy="48" r="2.6" class="d"/><circle cx="74" cy="60" r="2.6" class="d"/><circle cx="86" cy="12" r="2.6" class="d"/><circle cx="98" cy="24" r="2.6" class="d"/><circle cx="110" cy="36" r="2.6" class="d"/><circle cx="20" cy="48" r="2.6" class="d"/><circle cx="32" cy="60" r="2.6" class="d"/><circle cx="44" cy="12" r="2.6" class="d"/><circle cx="56" cy="24" r="2.6" class="d"/><circle cx="92" cy="36" r="2.6" class="d"/><circle cx="104" cy="48" r="2.6" class="d"/><circle cx="14" cy="60" r="2.6" class="d"/><circle cx="50" cy="12" r="2.6" class="d"/><circle cx="62" cy="24" r="2.6" class="d"/><circle cx="86" cy="36" r="2.6" class="d"/><circle cx="110" cy="48" r="2.6" class="d"/><circle cx="26" cy="60" r="2.6" class="d"/><circle cx="38" cy="12" r="2.6" class="d"/><circle cx="74" cy="24" r="2.6" class="d"/><circle cx="98" cy="36" r="2.6" class="d"/><rect x="48" y="6" width="34" height="14" class="hl"/></svg></div>
+            <p class="eyebrow">Falhas e estande à vista</p>
+            <h3>Mapeamento do plantio</h3>
+            <p>O voo logo após a emergência mostra linhas falhadas, duplas e reboleiras. Dá para medir o estande real, decidir replantio e corrigir a regulagem da semeadora na próxima safra.</p>
+          </article>
+          <article class="pa">
+            <div class="pa-fig"><svg viewBox="0 0 120 72" aria-hidden="true"><rect x="10" y="6" width="25" height="20" class="g"/><rect x="10" y="26" width="25" height="20" class="g"/><rect x="10" y="46" width="25" height="20" class="g"/><rect x="35" y="6" width="25" height="20" class="g"/><rect x="35" y="26" width="25" height="20" class="g"/><rect x="35" y="46" width="25" height="20" class="g"/><rect x="60" y="6" width="25" height="20" class="g"/><rect x="60" y="26" width="25" height="20" class="g"/><rect x="60" y="46" width="25" height="20" class="g"/><rect x="85" y="6" width="25" height="20" class="g"/><rect x="85" y="26" width="25" height="20" class="g"/><rect x="85" y="46" width="25" height="20" class="g"/><path d="M22.5 12 l3 4 h-6z" class="d"/><path d="M22.5 32 l3 4 h-6z" class="d"/><path d="M22.5 52 l3 4 h-6z" class="d"/><path d="M47.5 12 l3 4 h-6z" class="d"/><path d="M47.5 32 l3 4 h-6z" class="d"/><path d="M47.5 52 l3 4 h-6z" class="d"/><path d="M72.5 12 l3 4 h-6z" class="d"/><path d="M72.5 32 l3 4 h-6z" class="d"/><path d="M72.5 52 l3 4 h-6z" class="d"/><path d="M97.5 12 l3 4 h-6z" class="d"/><path d="M97.5 32 l3 4 h-6z" class="d"/><path d="M97.5 52 l3 4 h-6z" class="d"/></svg></div>
+            <p class="eyebrow">Amostras com coordenada</p>
+            <h3>Análise de solo georreferenciada</h3>
+            <p>Cada ponto de coleta tem posição GNSS, em grade ou por zona de manejo. O laudo vira mapa de fertilidade, e a calagem e a adubação passam a seguir a variação real do talhão.</p>
+          </article>
+          <article class="pa">
+            <div class="pa-fig"><svg viewBox="0 0 120 72" aria-hidden="true"><rect x="10" y="6" width="20" height="20" style="opacity:0.25" class="v"/><rect x="30" y="6" width="20" height="20" style="opacity:0.45" class="v"/><rect x="50" y="6" width="20" height="20" style="opacity:0.7" class="v"/><rect x="70" y="6" width="20" height="20" style="opacity:0.9" class="v"/><rect x="90" y="6" width="20" height="20" style="opacity:0.6" class="v"/><rect x="10" y="26" width="20" height="20" style="opacity:0.35" class="v"/><rect x="30" y="26" width="20" height="20" style="opacity:0.55" class="v"/><rect x="50" y="26" width="20" height="20" style="opacity:0.85" class="v"/><rect x="70" y="26" width="20" height="20" style="opacity:0.7" class="v"/><rect x="90" y="26" width="20" height="20" style="opacity:0.4" class="v"/><rect x="10" y="46" width="20" height="20" style="opacity:0.2" class="v"/><rect x="30" y="46" width="20" height="20" style="opacity:0.3" class="v"/><rect x="50" y="46" width="20" height="20" style="opacity:0.6" class="v"/><rect x="70" y="46" width="20" height="20" style="opacity:0.5" class="v"/><rect x="90" y="46" width="20" height="20" style="opacity:0.3" class="v"/></svg></div>
+            <p class="eyebrow">Dose certa no lugar certo</p>
+            <h3>Aplicação em taxa variável</h3>
+            <p>Com os mapas de solo e de vigor, cada zona recebe a dose que precisa de corretivo, fertilizante ou defensivo. Economiza insumo onde sobra e reforça onde falta.</p>
+          </article>
+          <article class="pa">
+            <div class="pa-fig"><svg viewBox="0 0 120 72" aria-hidden="true"><path d="M6 60 C30 50 50 62 70 48 S100 30 114 34" class="c"/><path d="M6 46 C28 38 48 48 66 36 S96 20 114 22" class="c"/><path d="M6 32 C26 26 46 34 62 24 S92 10 114 10" class="c"/><path d="M6 18 C24 14 40 20 56 12" class="c"/></svg></div>
+            <p class="eyebrow">Conservação de solo</p>
+            <h3>Curvas de nível e MDT</h3>
+            <p>O modelo digital de terreno gerado pelo drone dá as curvas de nível para locar terraços, planejar o sentido do plantio e conter a erosão antes que ela leve o solo embora.</p>
+          </article>
+          <article class="pa">
+            <div class="pa-fig"><svg viewBox="0 0 120 72" aria-hidden="true"><path d="M14 10 C30 26 26 38 44 46 S70 58 104 62" class="w"/><path d="M60 8 C58 24 52 34 44 46" class="w"/><path d="M100 14 C88 28 78 44 74 56" class="w"/></svg></div>
+            <p class="eyebrow">Água no caminho certo</p>
+            <h3>Drenagem e escoamento</h3>
+            <p>O relevo mostra para onde a água corre e onde ela acumula. Ajuda a posicionar carreadores, bacias de contenção e saídas de água sem abrir sulcos na lavoura.</p>
+          </article>
+          <article class="pa">
+            <div class="pa-fig"><svg viewBox="0 0 120 72" aria-hidden="true"><defs><linearGradient id="ndg" x1="0" x2="1"><stop offset="0" stop-color="#b22222"/><stop offset=".45" stop-color="#f2d04b"/><stop offset="1" stop-color="#1a783a"/></linearGradient></defs><rect x="10" y="8" width="100" height="56" rx="3" fill="url(#ndg)" opacity=".85"/><ellipse cx="34" cy="40" rx="16" ry="11" fill="#b22222" opacity=".8"/></svg></div>
+            <p class="eyebrow">A lavoura ao longo da safra</p>
+            <h3>Monitoramento de vigor</h3>
+            <p>Voos periódicos com câmera multiespectral geram índices como o NDVI. Manchas de baixo vigor aparecem antes de ficarem visíveis do chão e direcionam a visita técnica.</p>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="competencias">
+    <div class="wrap block-grid">
+      <p class="eyebrow">Competências</p>
+      <div>
+        <h2>Do levantamento ao mapa de manejo</h2>
+        <div class="skills">
+          <div><h3>Agricultura de precisão</h3><ul><li>Drones (VANT)</li><li>Planejamento de voo</li><li>Aplicação por drone</li><li>Agisoft Metashape</li><li>QGIS</li><li>Ortomosaicos</li><li>MDT / MDE</li><li>Google Earth</li></ul></div>
+          <div><h3>Georreferenciamento e cadastro</h3><ul><li>GNSS / RTK</li><li>PPP-IBGE</li><li>SIGEF / INCRA</li><li>SICAR (CAR)</li><li>Planilhas ODS do SIGEF</li><li>Memorial descritivo</li><li>Tabela de confrontantes</li><li>Retificação de matrícula</li></ul></div>
+          <div><h3>Agronomia e campo</h3><ul><li>Controle de qualidade</li><li>Preparo de solo e plantio</li><li>Regulagem de semeadoras</li><li>Manejo de pragas e doenças</li><li>Plantas daninhas</li></ul></div>
+          <div><h3>Desenho técnico</h3><ul><li>AutoCAD / DXF</li><li>Plantas e memoriais</li><li>Perfis laterais de pontes</li><li>Taludes (crista e pé)</li><li>Locação com coletora</li></ul></div>
+          <div><h3>Dados e gestão</h3><ul><li>Excel</li><li>Relatórios técnicos</li><li>Auditoria de operações</li></ul></div>
+          <div><h3>Comportamentais</h3><ul><li>Trabalho em equipe</li><li>Comunicação</li><li>Organização</li><li>Mediação de conflitos</li><li>Vontade de aprender</li></ul></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="fluxo">
+    <div class="wrap block-grid">
+      <p class="eyebrow">Fluxo de trabalho</p>
+      <div>
+        <h2>Georreferenciamento, do campo ao cartório</h2>
+        <ol class="flow">
+          <li><b>Pesquisa documental</b><span>Matrícula, cadeia filiatória e confrontantes</span></li>
+          <li><b>Levantamento</b><span>Vértices medidos com GNSS/RTK</span></li>
+          <li><b>Processamento</b><span>Pós-processamento PPP-IBGE</span></li>
+          <li><b>Peças técnicas</b><span>Planta, memorial e planilha ODS</span></li>
+          <li><b>Certificação</b><span>Envio e análise no SIGEF</span></li>
+          <li><b>Registro</b><span>Averbação no cartório de imóveis</span></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="casos">
+    <div class="wrap block-grid">
+      <p class="eyebrow">Estudos de caso</p>
+      <div>
+        <h2>Trabalhos reais, dados anonimizados</h2>
+        <div class="cases">
+          <article class="case">
+            <header><p class="eyebrow">Caso 1 · Mapeamento com drone</p><h3>Ortomosaicos e modelos de terreno de áreas rurais</h3><p>Topografia e agrimensura · out/2025 a atual</p></header>
+            <dl><dt>Contexto</dt><dd>Áreas rurais que precisam de base cartográfica atualizada e de leitura do relevo.</dd><dt>Responsabilidade</dt><dd>Planejamento e execução do voo, e processamento das imagens em Agisoft Metashape e QGIS.</dd><dt>Entrega</dt><dd>Ortomosaicos, modelos digitais de terreno e de elevação (MDT/MDE) e análises altimétricas.</dd><dt>Aprendizado</dt><dd>A qualidade do produto final começa no plano de voo: sobreposição, altura e pontos de apoio.</dd></dl>
+          </article>
+          <article class="case">
+            <header><p class="eyebrow">Caso 2 · Georreferenciamento</p><h3>Levantamento GNSS/RTK e certificação no SIGEF</h3><p>Topografia e agrimensura</p></header>
+            <dl><dt>Contexto</dt><dd>Imóveis rurais que precisam de certificação junto ao INCRA e de cadastro no CAR.</dd><dt>Responsabilidade</dt><dd>Coleta com GNSS/RTK, pós-processamento PPP-IBGE, operação do SIGEF e do SICAR, e plantas e memoriais descritivos em AutoCAD.</dd><dt>Método</dt><dd>Levantamento conforme as normas do INCRA/SIGEF, conferência de vértices e confrontações antes do envio.</dd><dt>Aprendizado</dt><dd>Um vértice errado trava a certificação inteira. Rigor no detalhe economiza semanas de retrabalho.</dd></dl>
+          </article>
+          <article class="case">
+            <header><p class="eyebrow">Caso 3 · Cadastro e relacionamento</p><h3>Retificação de matrícula e mediação de limites</h3><p>Atendimento a clientes e confrontantes</p></header>
+            <dl><dt>Contexto</dt><dd>Imóveis com matrícula antiga, descrição desatualizada ou divergência de divisa com vizinhos.</dd><dt>Responsabilidade</dt><dd>Laudo de confrontações, tabela de confrontantes e atendimento direto aos proprietários envolvidos.</dd><dt>Método</dt><dd>Leitura da matrícula e da cadeia filiatória, cruzamento com o levantamento e conversa técnica com cada confrontante.</dd><dt>Impacto</dt><dd>Limites resolvidos em acordo, com documentação pronta para instruir o processo em cartório.</dd></dl>
+          </article>
+          <article class="case">
+            <header><p class="eyebrow">Caso 4 · Qualidade de operações</p><h3>Auditorias de silvicultura, colheita e logística florestal</h3><p>Técnico Florestal · ago/2023 a out/2025</p></header>
+            <dl><dt>Contexto</dt><dd>Operações florestais de grande escala em São Paulo, Mato Grosso do Sul e Paraná, com rotina de viagens.</dd><dt>Responsabilidade</dt><dd>Verificação em campo da execução das operações e do cumprimento dos padrões técnicos.</dd><dt>Entrega</dt><dd>Relatórios de auditoria para apoiar a gestão e a melhoria dos processos.</dd><dt>Aprendizado</dt><dd>Leitura de campo em escala e comunicação direta com as frentes de trabalho.</dd></dl>
+          </article>
+          <article class="case">
+            <header><p class="eyebrow">Caso 5 · Produção agrícola</p><h3>Campos demonstrativos da Feira do Empreendedor Rural</h3><p>FIB Bauru · área prática, 2020 a 2025</p></header>
+            <dl><dt>Contexto</dt><dd>Feira anual com campos demonstrativos abertos a produtores e estudantes.</dd><dt>Responsabilidade</dt><dd>Planejamento dos campos, preparo de solo e plantio, instalação de estruturas e equipamentos e organização das demonstrações.</dd><dt>Aprendizado</dt><dd>Seis ciclos acompanhando a lavoura do preparo à apresentação.</dd></dl>
+          </article>
+          <article class="case">
+            <header><p class="eyebrow">Caso 6 · Empreendedorismo</p><h3>MD Drones: imagens aéreas e vídeos institucionais</h3><p>Empresa própria · @marlonduarte.drone</p></header>
+            <dl><dt>Contexto</dt><dd>Imóveis, fazendas, eventos e comércios que precisam de imagem aérea profissional.</dd><dt>Responsabilidade</dt><dd>Atendimento ao cliente, planejamento de voo, captação com drone próprio e edição.</dd><dt>Aprendizado</dt><dd>Gestão completa de um serviço, da proposta comercial à entrega final.</dd></dl>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="trajetoria">
+    <div class="wrap block-grid">
+      <p class="eyebrow">Trajetória</p>
+      <div>
+        <h2>Do atendimento ao campo</h2>
+        <ol class="timeline">
+          <li><time>2018 – 2020</time><div><b>Aprendiz</b><p>Atendimento ao público e suporte administrativo.</p></div></li>
+          <li><time>2020 – 2025</time><div><b>Área prática · Feira do Empreendedor Rural, FIB</b><p>Campos demonstrativos, preparo de solo e plantio.</p></div></li>
+          <li><time>2021 – 2022</time><div><b>Operador de Telesserviços</b><p>Atendimento e solução de pendências de clientes.</p></div></li>
+          <li><time>2022 – 2023</time><div><b>Assistente de BackOffice</b><p>Relatórios de produção e controle de planilhas e documentos.</p></div></li>
+          <li><time>ago/2023 – out/2025</time><div><b>Técnico Florestal</b><p>Auditoria de silvicultura, colheita e logística florestal em SP, MS e PR.</p></div></li>
+          <li><time>2025</time><div><b>Engenheiro Agrônomo · FIB Bauru</b><p>Graduação concluída, junto com o CAAR pela FCA-Unesp.</p></div></li>
+          <li class="now"><time>out/2025 – atual</time><div><b>Assistente Técnico de Topografia</b><p>Mapeamento com drones, GNSS/RTK, SIGEF e SICAR.</p></div></li>
+          <li class="now"><time>em paralelo</time><div><b>Fundador · MD Drones</b><p>Imagens aéreas e vídeos institucionais com drone próprio.</p></div></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="formacao">
+    <div class="wrap block-grid">
+      <p class="eyebrow">Formação</p>
+      <div>
+        <h2>Formação e cursos</h2>
+        <div class="edu">
+          <div><b>Bacharelado em Engenharia Agronômica</b><span>FIB · Faculdades Integradas de Bauru · 2021–2025</span></div>
+          <div><b>CAAR · Curso de Aplicador Aeroagrícola Remoto</b><span>FCA-Unesp Botucatu · 2025 · aplicação com drones, tecnologia de aplicação, planejamento de voo e mapeamento</span></div>
+          <div><b>Mapeamento e Pós-Processamento com Drones</b><span>2025 · fotogrametria e integração com AutoCAD</span></div>
+          <div><b>Plantabilidade e Regulagem de Semeadoras</b><span>GPD · FCA-Unesp Botucatu · 2022 e 2023</span></div>
+          <div><b>CNH categoria B</b><span>Disponível para viagens e atividades a campo</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="contato">
+    <div class="wrap block-grid">
+      <p class="eyebrow">Contato</p>
+      <div>
+        <h2>Aberto a oportunidades em Bauru e região</h2>
+        <p class="prose" style="color:var(--muted)">Agricultura de precisão, produção agrícola, drones, georreferenciamento e qualidade de operações de campo. Disponível para viagens.</p>
+        <div class="contact">
+          <div class="ccard">
+            <span class="eyebrow">WhatsApp</span>
+            <span class="val" id="fone">(14) 99679-1426</span>
+            <div class="row"><a class="btn" href="https://wa.me/5514996791426" target="_blank" rel="noopener">Abrir conversa</a><button class="btn" type="button" id="copyFone">Copiar número</button></div>
+          </div>
+          <div class="ccard">
+            <span class="eyebrow">E-mail</span>
+            <span class="val">marloonduart@gmail.com</span>
+            <div class="row"><a class="btn" href="mailto:marloonduart@gmail.com">Escrever</a></div>
+          </div>
+          <div class="ccard">
+            <span class="eyebrow">LinkedIn</span>
+            <span class="val">in/marlon-duarte</span>
+            <div class="row"><a class="btn" href="https://www.linkedin.com/in/marlon-duarte-85084a265/" target="_blank" rel="noopener">Ver perfil</a></div>
+          </div>
+          <div class="ccard">
+            <span class="eyebrow">Instagram</span>
+            <span class="val">@marlonduarte.drone</span>
+            <div class="row"><a class="btn" href="https://www.instagram.com/marlonduarte.drone/" target="_blank" rel="noopener">Ver perfil</a></div>
+          </div>
+          <div class="ccard">
+            <span class="eyebrow">Localização</span>
+            <span class="val">Bauru/SP</span>
+            <span style="color:var(--muted);font-size:.9rem">Experiência em SP, MS e PR</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap"><span>Marlon Duarte · Engenheiro Agrônomo</span><span style="display:flex;gap:18px"><a href="https://www.linkedin.com/in/marlon-duarte-85084a265/" target="_blank" rel="noopener">LinkedIn</a><a href="#topo">Voltar ao topo</a></span></div></footer>
+
+<script>
+(function(){
+  const cv=document.getElementById('talhao'), ctx=cv.getContext('2d');
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const POLY=[[.07,.15],[.60,.07],[.93,.20],[.90,.84],[.42,.93],[.10,.80]];
+  const GW=160, GH=120;
+  const CAPS=[
+    'O drone percorre faixas paralelas com sobreposição, captando as bandas verde, vermelho, red edge e infravermelho próximo.',
+    'As bandas viram um índice de vigor (NDVI). Vermelho indica plantas com menos atividade fotossintética; verde, lavoura vigorosa.',
+    'Áreas parecidas são agrupadas em zonas de manejo, que orientam amostragem de solo e visitas de campo.',
+    'Cada zona recebe uma dose. O mapa de taxa variável segue para a máquina ou para o drone de aplicação.'
+  ];
+  const NAMES=['Voo e captura','Índice NDVI','Zonas de manejo','Prescrição'];
+  const HOLD=[0,3200,3800,4400];
+  const RAMP=[[0,[178,34,34]],[.3,[232,120,40]],[.5,[242,208,75]],[.72,[140,193,82]],[1,[26,120,58]]];
+  const ZC=[[214,96,77],[236,200,90],[64,150,80]];
+
+  function val(x,y){
+    let v=.58+.14*Math.sin(x*5.1+1.3)*Math.cos(y*4.2)+.07*Math.sin((x+y)*11)+.04*Math.sin(x*23+y*7);
+    const g=(cx,cy,r,a)=>a*Math.exp(-((x-cx)**2+(y-cy)**2)/(r*r));
+    v+=g(.30,.62,.13,-.38)+g(.74,.30,.10,-.28)+g(.62,.72,.12,.16)+g(.45,.25,.08,-.12);
+    return Math.max(0,Math.min(1,v));
+  }
+  function ramp(t){
+    for(let i=1;i<RAMP.length;i++){if(t<=RAMP[i][0]){const[a,ca]=RAMP[i-1],[b,cb]=RAMP[i],k=(t-a)/(b-a);return ca.map((c,j)=>Math.round(c+(cb[j]-c)*k));}}
+    return RAMP[RAMP.length-1][1];
+  }
+  const V=new Float32Array(GW*GH);
+  for(let j=0;j<GH;j++)for(let i=0;i<GW;i++)V[j*GW+i]=val(i/GW,j/GH);
+  function layer(fn){const c=document.createElement('canvas');c.width=GW;c.height=GH;const x=c.getContext('2d'),im=x.createImageData(GW,GH);
+    for(let k=0;k<GW*GH;k++){const[r,g,b]=fn(V[k]);im.data[k*4]=r;im.data[k*4+1]=g;im.data[k*4+2]=b;im.data[k*4+3]=255;}x.putImageData(im,0,0);return c;}
+  const L_RGB=layer(v=>[Math.round(92+40*(1-v)),Math.round(110+50*v),Math.round(58+12*v)]);
+  const L_NDVI=layer(v=>ramp(v));
+  const L_ZONE=layer(v=>ZC[v<.45?0:v<.64?1:2]);
+
+  let W=0,H=0,dpr=1,P=[],box,path=[],plen=0,soil='#D8D2C2',ink='#13211B',flag='#BE1A5A';
+  function tokens(){const cs=getComputedStyle(document.documentElement);soil=cs.getPropertyValue('--soil').trim()||soil;ink=cs.getPropertyValue('--ink').trim()||ink;flag=cs.getPropertyValue('--flag').trim()||flag;}
+  function resize(){
+    const r=cv.getBoundingClientRect();dpr=Math.min(2,window.devicePixelRatio||1);W=r.width;H=r.width*.75;
+    cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);
+    P=POLY.map(([x,y])=>[x*W,y*H]);
+    const xs=P.map(p=>p[0]),ys=P.map(p=>p[1]);box={x0:Math.min(...xs),x1:Math.max(...xs),y0:Math.min(...ys),y1:Math.max(...ys)};
+    const N=7,sw=(box.y1-box.y0)/N;path=[];
+    for(let i=0;i<N;i++){const y=box.y0+(i+.5)*sw,a=box.x0-W*.03,b=box.x1+W*.03;path.push(i%2?[b,y]:[a,y],i%2?[a,y]:[b,y]);}
+    plen=0;for(let i=1;i<path.length;i++)plen+=Math.hypot(path[i][0]-path[i-1][0],path[i][1]-path[i-1][1]);
+    tokens();
+  }
+  function at(s){let acc=0;for(let i=1;i<path.length;i++){const[a,b]=[path[i-1],path[i]],d=Math.hypot(b[0]-a[0],b[1]-a[1]);if(acc+d>=s){const k=(s-acc)/d;return{x:a[0]+(b[0]-a[0])*k,y:a[1]+(b[1]-a[1])*k,seg:i,ang:Math.atan2(b[1]-a[1],b[0]-a[0])};}acc+=d;}
+    const e=path[path.length-1];return{x:e[0],y:e[1],seg:path.length-1,ang:0};}
+  function clipPoly(){ctx.beginPath();P.forEach(([x,y],i)=>i?ctx.lineTo(x,y):ctx.moveTo(x,y));ctx.closePath();}
+  function draw(img,smooth,alpha){ctx.save();ctx.globalAlpha=alpha;ctx.imageSmoothingEnabled=smooth;ctx.drawImage(img,0,0,W,H);ctx.restore();}
+  function rows(){ctx.save();ctx.strokeStyle='rgba(20,40,20,.18)';ctx.lineWidth=1;for(let x=-H;x<W;x+=5){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x+H*.35,H);ctx.stroke();}ctx.restore();}
+  function prescription(alpha){
+    const bx=10,by=8,cw=W/bx,ch=H/by;ctx.save();ctx.globalAlpha=alpha;ctx.font=`500 ${Math.max(8,Math.min(11,cw*.22))}px "IBM Plex Mono",monospace`;ctx.textAlign='center';ctx.textBaseline='middle';
+    for(let j=0;j<by;j++)for(let i=0;i<bx;i++){let s=0,n=0;for(let y=Math.floor(j*GH/by);y<(j+1)*GH/by;y++)for(let x=Math.floor(i*GW/bx);x<(i+1)*GW/bx;x++){s+=V[y*GW+x];n++;}
+      const v=s/n,dose=Math.round((200-v*130)/10)*10,t=(dose-70)/130;
+      ctx.fillStyle=`rgb(${Math.round(235-t*150)},${Math.round(230-t*120)},${Math.round(200-t*40)})`;ctx.fillRect(i*cw,j*ch,cw+.5,ch+.5);
+      ctx.strokeStyle='rgba(0,0,0,.12)';ctx.strokeRect(i*cw+.5,j*ch+.5,cw,ch);
+      if(cw>30){ctx.fillStyle=t>.55?'#fff':'#2b2b22';ctx.fillText(dose,i*cw+cw/2,j*ch+ch/2);}}
+    ctx.restore();
+  }
+  function stageLayer(s,alpha,pos){
+    if(s===0){draw(L_RGB,true,alpha);ctx.save();ctx.globalAlpha=alpha;rows();ctx.restore();
+      if(pos){const N=7,sw=(box.y1-box.y0)/N,done=Math.floor((pos.seg-1)/2);ctx.save();ctx.beginPath();
+        if(done>0)ctx.rect(0,box.y0,W,done*sw);
+        const goingRight=done%2===0,x0=goingRight?0:pos.x,x1=goingRight?pos.x:W;ctx.rect(x0,box.y0+done*sw,x1-x0,sw);
+        ctx.clip();draw(L_NDVI,true,alpha);ctx.restore();}}
+    else if(s===1)draw(L_NDVI,true,alpha);
+    else if(s===2){draw(L_ZONE,false,alpha);}
+    else prescription(alpha);
+  }
+  function drone(x,y,ang,t){
+    const s=Math.max(.7,W/520);ctx.save();
+    ctx.fillStyle='rgba(0,0,0,.18)';ctx.beginPath();ctx.ellipse(x+10*s,y+14*s,20*s,14*s,0,0,7);ctx.fill();
+    ctx.translate(x,y);ctx.rotate(ang);
+    const sw=(box.y1-box.y0)/7;ctx.strokeStyle='rgba(255,255,255,.75)';ctx.setLineDash([3,3]);ctx.strokeRect(-sw*.5,-sw*.5,sw,sw);ctx.setLineDash([]);
+    const arm=15*s;ctx.strokeStyle='#2a2f2c';ctx.lineWidth=3.2*s;ctx.lineCap='round';
+    [[1,1],[1,-1],[-1,1],[-1,-1]].forEach(([a,b])=>{ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(a*arm,b*arm);ctx.stroke();});
+    [[1,1],[1,-1],[-1,1],[-1,-1]].forEach(([a,b],k)=>{const cx=a*arm,cy=b*arm;ctx.fillStyle='rgba(220,225,222,.35)';ctx.beginPath();ctx.arc(cx,cy,9*s,0,7);ctx.fill();
+      ctx.strokeStyle='rgba(30,30,30,.55)';ctx.lineWidth=1.4*s;const r=t*.05*(k%2?1:-1);ctx.beginPath();ctx.moveTo(cx+Math.cos(r)*9*s,cy+Math.sin(r)*9*s);ctx.lineTo(cx-Math.cos(r)*9*s,cy-Math.sin(r)*9*s);ctx.stroke();
+      ctx.fillStyle='#2a2f2c';ctx.beginPath();ctx.arc(cx,cy,2.2*s,0,7);ctx.fill();});
+    ctx.fillStyle='#3a403c';ctx.beginPath();ctx.roundRect(-9*s,-6*s,18*s,12*s,4*s);ctx.fill();
+    ctx.fillStyle='#111';ctx.fillRect(7*s,-5*s,4*s,10*s);
+    ctx.fillStyle='#7fd0ff';[-3.4,-1.2,1.2,3.4].forEach(o=>{ctx.beginPath();ctx.arc(9*s,o*s,.9*s,0,7);ctx.fill();});
+    ctx.fillStyle=flag;ctx.beginPath();ctx.arc(-7*s,0,1.6*s,0,7);ctx.fill();
+    ctx.restore();
+  }
+  function vertices(){ctx.save();ctx.font=`500 ${W<420?9:10}px "IBM Plex Mono",monospace`;
+    P.forEach(([x,y],i)=>{ctx.fillStyle=flag;ctx.save();ctx.translate(x,y);ctx.rotate(Math.PI/4);ctx.fillRect(-3.5,-3.5,7,7);ctx.restore();
+      const lbl='M-0'+(i+1),dx=x>W/2?8:-8;ctx.textAlign=x>W/2?'left':'right';ctx.fillStyle=ink;ctx.fillText(lbl,x+dx,y+(y>H/2?14:-6));});ctx.restore();}
+
+  const btns=[...document.querySelectorAll('.stages button')],hudStage=document.getElementById('hudStage'),hudCoord=document.getElementById('hudCoord'),cap=document.getElementById('capText'),leg=document.getElementById('legend'),play=document.getElementById('play');
+  const LEG=[
+    '<span>Captura em andamento</span><div class="ramp" style="background:linear-gradient(90deg,#b22222,#e87828,#f2d04b,#8cc152,#1a783a)"></div><div class="ramp-labels"><span>NDVI 0,2</span><span>0,9</span></div>',
+    '<span>NDVI</span><div class="ramp" style="background:linear-gradient(90deg,#b22222,#e87828,#f2d04b,#8cc152,#1a783a)"></div><div class="ramp-labels"><span>0,2 baixo</span><span>0,9 alto</span></div>',
+    '<div class="zones"><span><i style="background:rgb(214,96,77)"></i>Baixo vigor</span><span><i style="background:rgb(236,200,90)"></i>Médio vigor</span><span><i style="background:rgb(64,150,80)"></i>Alto vigor</span></div>',
+    '<span>Dose de adubação</span><div class="ramp" style="background:linear-gradient(90deg,rgb(235,230,200),rgb(85,110,160))"></div><div class="ramp-labels"><span>70</span><span>200 kg/ha</span></div>'
+  ];
+  let stage=reduce?1:0,prev=-1,stageT0=performance.now(),fadeT0=0,playing=!reduce,lastPos=null,pausedAt=0;
+  function setStage(s,now){prev=stage;stage=s;stageT0=now;fadeT0=now;
+    btns.forEach((b,i)=>{b.setAttribute('aria-pressed',i===s);b.querySelector('.bar').style.width='0';});
+    hudStage.innerHTML='<strong>0'+(s+1)+'</strong> '+NAMES[s];cap.textContent=CAPS[s];leg.innerHTML=LEG[s];}
+  btns.forEach((b,i)=>b.addEventListener('click',()=>setStage(i,performance.now())));
+  play.addEventListener('click',()=>{const now=performance.now();playing=!playing;
+    if(playing){stageT0+=now-pausedAt;fadeT0+=now-pausedAt;}else pausedAt=now;
+    play.textContent=playing?'Pausar':'Animar';play.setAttribute('aria-label',playing?'Pausar animação':'Retomar animação');});
+  if(reduce){play.textContent='Animar';play.setAttribute('aria-label','Retomar animação');}
+  setStage(stage,performance.now());prev=-1;
+
+  function frame(now){
+    const t=playing?now:pausedAt||now;
+    const el=t-stageT0,speed=W*.42/1000;
+    let pos;
+    if(stage===0){const s=Math.min(plen,el*speed);pos=at(s);lastPos=pos;
+      btns[0].querySelector('.bar').style.width=(s/plen*100)+'%';
+      if(s>=plen&&playing)setStage(1,now);}
+    else{const k=Math.min(1,el/HOLD[stage]);btns[stage].querySelector('.bar').style.width=(k*100)+'%';
+      if(k>=1&&playing)setStage((stage+1)%4,now);}
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    ctx.fillStyle=soil;ctx.fillRect(0,0,W,H);
+    ctx.save();ctx.strokeStyle='rgba(0,0,0,.06)';for(let x=0;x<W;x+=24){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}for(let y=0;y<H;y+=24){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}ctx.restore();
+    ctx.save();clipPoly();ctx.clip();
+    const fa=Math.min(1,(t-fadeT0)/700);
+    if(prev>=0&&fa<1)stageLayer(prev,1,prev===0?lastPos:null);
+    stageLayer(stage,prev>=0&&fa<1?fa:1,stage===0?pos:null);
+    ctx.restore();
+    ctx.save();clipPoly();ctx.strokeStyle=flag;ctx.lineWidth=1.6;ctx.setLineDash([6,4]);ctx.stroke();ctx.restore();
+    vertices();
+    if(stage===0&&pos){ctx.save();ctx.strokeStyle='rgba(255,255,255,.55)';ctx.lineWidth=1;ctx.setLineDash([2,4]);ctx.beginPath();ctx.moveTo(path[0][0],path[0][1]);for(let i=1;i<pos.seg;i++)ctx.lineTo(path[i][0],path[i][1]);ctx.lineTo(pos.x,pos.y);ctx.stroke();ctx.restore();
+      drone(pos.x,pos.y,pos.ang,t);
+      const E=700000+pos.x/W*1180,N=7531900-pos.y/H*885;hudCoord.innerHTML='SIRGAS 2000 / UTM 22S<br>E '+Math.round(E).toLocaleString('pt-BR')+' · N '+Math.round(N).toLocaleString('pt-BR');}
+    else{const hx=W*.95,hy=H*.06+Math.sin(t/600)*2;drone(hx,hy,Math.PI,t);}
+    requestAnimationFrame(frame);
+  }
+  try{new ResizeObserver(resize).observe(cv);}catch(e){addEventListener('resize',resize);}
+  resize();
+  matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change',tokens);
+  new MutationObserver(tokens).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+  requestAnimationFrame(frame);
+
+  const cf=document.getElementById('copyFone');
+  cf.addEventListener('click',()=>{const txt='(14) 99679-1426';
+    const ok=()=>{cf.textContent='Copiado';setTimeout(()=>cf.textContent='Copiar número',1800);};
+    try{navigator.clipboard.writeText(txt).then(ok).catch(sel);}catch(e){sel();}
+    function sel(){const r=document.createRange();r.selectNodeContents(document.getElementById('fone'));const s=getSelection();s.removeAllRanges();s.addRange(r);cf.textContent='Selecionado';}
+  });
+})();
+</script>
+</body>
+</html>
